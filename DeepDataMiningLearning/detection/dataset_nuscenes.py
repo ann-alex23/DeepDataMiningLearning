@@ -86,11 +86,11 @@ class NuScenesDataset(Dataset):
         raise FileNotFoundError(f"No image found for token {sample_data_token}")
 
 # Usage Example
-dataset = NuScenesDataset(root=r"C:/Users/annal/Downloads/nuimages-v1.0-mini", split="train", version="v1.0-mini")
-image, target = dataset[0]  # Load first sample
-print("Image shape:", image.size)
-print("Bounding box:", target["boxes"])
-print("Label:", target["labels"])
-print(len(dataset.category_map.values()))
+# dataset = NuScenesDataset(root=r"C:/Users/annal/Downloads/nuimages-v1.0-mini", split="train", version="v1.0-mini")
+# image, target = dataset[0]  # Load first sample
+# print("Image shape:", image.size)
+# print("Bounding box:", target["boxes"])
+# print("Label:", target["labels"])
+# print(len(dataset.category_map.values()))
 
 # print("Mask shape:", target["masks"].shape if target["masks"] is not None else "No mask available")
