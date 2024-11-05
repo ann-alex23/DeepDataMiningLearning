@@ -54,7 +54,7 @@ def get_args_parser(add_help=True):
     )
     parser.add_argument("--model", default="customrcnn_resnet152", type=str, help="model name") #customrcnn_resnet152, fasterrcnn_resnet50_fpn_v2
     parser.add_argument("--trainable", default=0, type=int, help="number of trainable layers (sequence) of backbone")
-    parser.add_argument("--device", default="cuda", type=str, help="device (Use cuda or cpu Default: cuda)")
+    parser.add_argument("--device", default="cpu", type=str, help="device (Use cuda or cpu Default: cuda)")
     parser.add_argument(
         "-b", "--batch-size", default=16, type=int, help="images per gpu, the total batch size is $NGPU x batch_size"
     )
