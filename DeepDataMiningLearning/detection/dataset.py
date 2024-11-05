@@ -9,6 +9,7 @@ from PIL import Image
 import csv
 from DeepDataMiningLearning.detection.dataset_kitti import KittiDataset
 from DeepDataMiningLearning.detection.dataset_waymococo import WaymoCOCODataset
+from DeepDataMiningLearning.detection.dataset_nuscenes import NuScenesDataset
 from collections import defaultdict
 
 import torch
@@ -157,6 +158,8 @@ def get_dataset(datasetname, is_train, is_val, args):
         ds, num_classes = get_waymococodataset(is_train, is_val, args)
     elif datasetname.lower() == 'yolo':
         ds, num_classes = get_yolodataset(is_train, is_val, args)
+    elif datasetname.lower() == 'nuscenes':
+        ds,num_classes=get_nuscenesdataset(is_train, is_val, args)
     return ds, num_classes
 
 def get_transform(is_train, args):
@@ -215,7 +218,17 @@ def get_waymococodataset(is_train, is_val, args):
     num_classes = dataset.numclass
     return dataset, num_classes
     #mykitti = datasets.Kitti(root=rootPath, train= True, transform = get_transform(is_train, args), target_transform = None, download = False)
-
+def get_nuscenesdataset(is_train, is_val, args):
+    rootPath=args.data_path
+    if is_val == True:
+        transformfunc=get_transform(False, args)
+        dataset = NuScenesDataset(rootPath, split='val', transform=transformfunc)
+    else:
+        transformfunc=get_transform(True, args) #add augumentation
+        dataset = NuScenesDataset(rootPath, split='train', transform=transformfunc)
+    
+    num_classes = dataset.numclass
+    return dataset, num_classes
 import yaml
 from DeepDataMiningLearning.detection.dataset_yolo import YOLODataset
 def get_yolodataset(is_train, is_val, args):
