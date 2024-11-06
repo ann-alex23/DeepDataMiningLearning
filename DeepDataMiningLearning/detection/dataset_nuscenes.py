@@ -60,7 +60,7 @@ class NuScenesDataset(Dataset):
         #     }
         #     mask = coco_mask.decode(mask_data)
         #     mask = torch.tensor(mask, dtype=torch.uint8)  # Convert to tensor
-        area = (bbox[3] - bbox[1]) * (bbox[2] - bbox[0])
+        area = ((bbox[3] - bbox[1]) * (bbox[2] - bbox[0])).clone().detach().to(torch.int64)
         iscrowd=torch.zeros(1, dtype=torch.int64)
         target = {
             "boxes": bbox.unsqueeze(0),  # Add batch dimension
@@ -90,9 +90,10 @@ class NuScenesDataset(Dataset):
         raise FileNotFoundError(f"No image found for token {sample_data_token}")
 
 # Usage Example
-# dataset = NuScenesDataset(root=r"C:/Users/annal/Downloads/nuimages-v1.0-mini", split="train", version="v1.0-mini")
-# image, target = dataset[0]  # Load first sample
-# print(target["boxes"])
+dataset = NuScenesDataset(root=r"C:/Users/annal/Downloads/nuimages-v1.0-mini", split="train", version="v1.0-mini")
+image, target = dataset[0]  # Load first sample
+print(target["area"].tolist(),type(target["area"].tolist()))
+print(target["iscrowd"].tolist())
 # print("Image shape:", image.size)
 # print("Bounding box:", target["boxes"])
 # print("Label:", target["labels"])
