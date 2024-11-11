@@ -47,7 +47,7 @@ class KittiDataset(torch.utils.data.Dataset):
         self.INSTANCE_CATEGORY_NAMES = ['__background__', 'Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc', 'DontCare']
         self.INSTANCE2id = {'__background__':0,'Car': 1, 'Van': 2, 'Truck': 3, 'Pedestrian':4, 'Person_sitting':5, 'Cyclist':6, 'Tram':7, 'Misc':8, 'DontCare':9} #background is 0
         self.id2INSTANCE = {v: k for k, v in self.INSTANCE2id.items()}
-        self.numclass = 9 #including background, excluding the 'DontCare'
+        self.numclass = 10 #including background, excluding the 'DontCare'
 
     def get_image(self, idx):
         img_file = Path(self.root_split_path) / self.image_dir_name / ('%s.png' % idx)
@@ -240,23 +240,21 @@ class MyKittiDetection(torch.utils.data.Dataset):
         self.root = root
         self.train = train
         self.transform = transform
-        self._location = "training" if self.train else "testing"
+        self._location = "training/" if self.train else "testing/"
         self.image_dir_name = image_dir
         self.labels_dir_name = labels_dir
         # load all image files, sorting them to
         # ensure that they are aligned
-        image_dir = os.path.join(self.root, "raw", self._location, self.image_dir_name)
-        if self.train:
-            labels_dir = os.path.join(self.root, "raw", self._location, self.labels_dir_name)
+        image_dir = os.path.join(self.root,'data_object_image_2/', self._location, self.image_dir_name)
+        labels_dir = os.path.join(self.root,'data_object_label_2/', self._location, self.labels_dir_name)
         for img_file in os.listdir(image_dir):
             self.images.append(os.path.join(image_dir, img_file))
-            if self.train:
-                self.targets.append(os.path.join(labels_dir, f"{img_file.split('.')[0]}.txt"))
+            self.targets.append(os.path.join(labels_dir, f"{img_file.split('.')[0]}.txt"))
         #self.imgs = list(sorted(os.listdir(os.path.join(self.root, "PNGImages"))))
-        self.INSTANCE_CATEGORY_NAMES = ['Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc', 'DontCare']
-        self.INSTANCE2id = {'Car': 1, 'Van': 2, 'Truck': 3, 'Pedestrian':4, 'Person_sitting':5, 'Cyclist':6, 'Tram':7, 'Misc':8, 'DontCare':9} #background is 0
+        self.INSTANCE_CATEGORY_NAMES = ['__background__', 'Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc', 'DontCare']
+        self.INSTANCE2id = {'__background__':0,'Car': 1, 'Van': 2, 'Truck': 3, 'Pedestrian':4, 'Person_sitting':5, 'Cyclist':6, 'Tram':7, 'Misc':8, 'DontCare':9} #background is 0
         self.id2INSTANCE = {v: k for k, v in self.INSTANCE2id.items()}
-        self.numclass = 9 #including background, excluding the 'DontCare'
+        self.numclass = 10 #including background, excluding the 'DontCare'
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
         """Get item at a given index.
@@ -283,7 +281,7 @@ class MyKittiDetection(torch.utils.data.Dataset):
             image = None
         else:
             image = Image.open(self.images[index])
-            target, image_id = self._parse_target(index) if self.train else None
+            target, image_id = self._parse_target(index)
 
         if WrapNewDict:
             target = dict(image_id=image_id, annotations=target) #new changes
@@ -337,7 +335,7 @@ class MyKittiDetection(torch.utils.data.Dataset):
             boxes = torch.as_tensor(boxes, dtype=torch.float32)
             # there is only one class
             labels = torch.as_tensor(labels, dtype=torch.int64)
-            image_id = torch.tensor([index])
+            image_id = int(index)
             area = (boxes[:, 3] - boxes[:, 1]) * (boxes[:, 2] - boxes[:, 0])
             # suppose all instances are not crowd
             iscrowd = torch.zeros((num_objs,), dtype=torch.int64)
@@ -387,8 +385,9 @@ if __name__ == "__main__":
         weights = ''
         test_only = False
     
-    rootPath = '/data/cmpe249-fa23/torchvisiondata/Kitti'
-    is_train = True
+    rootPath = 'C:/Users/annal/Downloads/kitti_small/'
+    
+    is_train = False
     kittidataset = MyKittiDetection(rootPath, train=True, transform=get_transformsimple(is_train))
     print(kittidataset.INSTANCE_CATEGORY_NAMES)
     print("Dataset len:", len(kittidataset))

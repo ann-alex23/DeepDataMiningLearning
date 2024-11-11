@@ -7,7 +7,7 @@ import os
 from typing import Any, Callable, List, Optional, Tuple
 from PIL import Image
 import csv
-from DeepDataMiningLearning.detection.dataset_kitti import KittiDataset
+from DeepDataMiningLearning.detection.dataset_kitti import MyKittiDetection
 from DeepDataMiningLearning.detection.dataset_waymococo import WaymoCOCODataset
 from DeepDataMiningLearning.detection.dataset_nuscenes import NuScenesDataset
 from collections import defaultdict
@@ -193,11 +193,10 @@ def get_kittidataset(is_train, is_val, args):
     rootPath=args.data_path
     #dataset = MyKittiDetection(rootPath, train=True, transform=get_transform(is_train, args))
     if is_val == True:
-        transformfunc=get_transform(False, args)
-        dataset = KittiDataset(rootPath, train=True, split='val', transform=transformfunc)
+        dataset = MyKittiDetection(rootPath, train=False, transform=get_transform(is_train, args))
     else:
         transformfunc=get_transform(True, args) #add augumentation
-        dataset = KittiDataset(rootPath, train=is_train, split='train', transform=transformfunc)
+        dataset = MyKittiDetection(rootPath, train=True, transform=get_transform(is_train, args))
     
     num_classes = dataset.numclass
     return dataset, num_classes

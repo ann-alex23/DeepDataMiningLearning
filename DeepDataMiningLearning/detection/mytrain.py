@@ -52,7 +52,7 @@ def get_args_parser(add_help=True):
         type=str,
         help="dataset name. Use coco for object detection and instance segmentation and coco_kp for Keypoint detection",
     )
-    parser.add_argument("--model", default="customrcnn_resnet152", type=str, help="model name") #customrcnn_resnet152, fasterrcnn_resnet50_fpn_v2
+    parser.add_argument("--model", default="fasterrcnn_resnet50_fpn_v2", type=str, help="model name") #customrcnn_resnet152, fasterrcnn_resnet50_fpn_v2
     parser.add_argument("--trainable", default=0, type=int, help="number of trainable layers (sequence) of backbone")
     parser.add_argument("--device", default="cpu", type=str, help="device (Use cuda or cpu Default: cuda)")
     parser.add_argument(

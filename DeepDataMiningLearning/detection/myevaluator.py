@@ -282,7 +282,7 @@ def convert_to_coco_api(ds):#mykittidetectiondataset
         bboxes[:, 2:] -= bboxes[:, :2] #[xmin, ymin, xmax, ymax] in torch to [xmin, ymin, width, height] in COCO
         bboxes = bboxes.tolist() #23 list of [536.0, 623.0, 51.0, 18.0]
         labels = targets["labels"].tolist() #torch.Size([23]) -> list 23 [1,1,1]
-        areas = [targets["area"]] #torch.Size([23]) -> list 23 []
+        areas = targets["area"].tolist() #torch.Size([23]) -> list 23 []
         iscrowd = targets["iscrowd"].tolist() #torch.Size([23]) -> list
         if "masks" in targets:
             masks = targets["masks"]
