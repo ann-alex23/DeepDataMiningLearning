@@ -245,16 +245,18 @@ class MyKittiDetection(torch.utils.data.Dataset):
         self.labels_dir_name = labels_dir
         # load all image files, sorting them to
         # ensure that they are aligned
-        image_dir = os.path.join(self.root,'data_object_image_2/', self._location, self.image_dir_name)
-        labels_dir = os.path.join(self.root,'data_object_label_2/', self._location, self.labels_dir_name)
+        image_dir = os.path.join(self.root,'data_object_image_2/', self._location, self.image_dir_name) #image directory
+        labels_dir = os.path.join(self.root,'data_object_label_2/', self._location, self.labels_dir_name) # label directory
+        # Appending image paths to image folder and target folder.
         for img_file in os.listdir(image_dir):
             self.images.append(os.path.join(image_dir, img_file))
             self.targets.append(os.path.join(labels_dir, f"{img_file.split('.')[0]}.txt"))
         #self.imgs = list(sorted(os.listdir(os.path.join(self.root, "PNGImages"))))
+        # Categories
         self.INSTANCE_CATEGORY_NAMES = ['__background__', 'Car', 'Van', 'Truck', 'Pedestrian', 'Person_sitting', 'Cyclist', 'Tram', 'Misc', 'DontCare']
         self.INSTANCE2id = {'__background__':0,'Car': 1, 'Van': 2, 'Truck': 3, 'Pedestrian':4, 'Person_sitting':5, 'Cyclist':6, 'Tram':7, 'Misc':8, 'DontCare':9} #background is 0
         self.id2INSTANCE = {v: k for k, v in self.INSTANCE2id.items()}
-        self.numclass = 10 #including background, excluding the 'DontCare'
+        self.numclass = 10 #including background
 
     def __getitem__(self, index: int) -> Tuple[Any, Any]:
         """Get item at a given index.

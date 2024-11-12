@@ -226,7 +226,7 @@ def convert_to_coco_api2(ds):#mykittidetectiondataset
         bboxes[:, 2:] -= bboxes[:, :2] #[xmin, ymin, xmax, ymax] in torch to [xmin, ymin, width, height] in COCO
         bboxes = bboxes.tolist()
         labels = targets["labels"].tolist()
-        areas = [targets["area"]]
+        areas = targets["area"].tolist()
         iscrowd = targets["iscrowd"].tolist()
         if "masks" in targets:
             masks = targets["masks"]
@@ -509,9 +509,9 @@ def yoloevaluate(model, data_loader, preprocess, device):
         bboxes = bboxes.tolist()
         labels = batch['cls'].tolist()
         #labels = targets["labels"].tolist()
-        areas = [batch["area"][0].tolist()]
+        areas = batch["area"][0].tolist()
         #areas = targets["area"].tolist()
-        iscrowd = [batch["iscrowd"][0].tolist()]
+        iscrowd = batch["iscrowd"][0].tolist()
         #iscrowd = targets["iscrowd"].tolist()
         num_objs = len(bboxes)
         for i in range(num_objs):
