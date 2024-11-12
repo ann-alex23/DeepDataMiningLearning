@@ -57,11 +57,11 @@ class NuScenesDataset(Dataset):
 
         # Collect all annotations for the image
         for ann in image_annotations:
-            # Use the provided bbox directly in [xmin, ymin, xmax, ymax] format
+            # bbox  in [xmin, ymin, xmax, ymax] format
             bbox = ann['bbox']
             boxes.append(bbox)
 
-            # Get category label
+            # Get category label from category.json file
             category_token = ann['category_token']
             category_name = self.category_map.get(category_token, "__background__")
             label = list(self.category_map.values()).index(category_name)
@@ -70,7 +70,7 @@ class NuScenesDataset(Dataset):
             # Calculate area and add iscrowd value
             width, height = bbox[2] - bbox[0], bbox[3] - bbox[1]
             areas.append(width * height)
-            iscrowd.append(0)  # Assuming all annotations are not crowd (adjust if needed)
+            iscrowd.append(0)
 
         # Convert lists to tensors and prepare target dictionary
         target = {
@@ -81,7 +81,7 @@ class NuScenesDataset(Dataset):
             "iscrowd": torch.as_tensor(iscrowd, dtype=torch.int64),
         }
         
-        # Apply transforms, if any
+        # Apply transforms
         if self.transform:
             image, target = self.transform(image, target)
         
@@ -100,7 +100,7 @@ class NuScenesDataset(Dataset):
         
         raise FileNotFoundError(f"No image found for token {sample_data_token}")
 
-# Usage Example
+# Example
 # dataset = NuScenesDataset(root=r"C:/Users/annal/Downloads/nuscenes_dataset", split="val", version="nuimages-v1.0-all-metadata/v1.0-val")
 # print(len(dataset))
 # image, target = dataset[4]
