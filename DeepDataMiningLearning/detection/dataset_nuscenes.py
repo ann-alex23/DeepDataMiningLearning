@@ -42,6 +42,7 @@ class NuScenesDataset(Dataset):
         return len(self.image_keys)
 
     def __getitem__(self, idx):
+        #Annotations for the image with image_id idx
         sample_data_token = self.image_keys[idx]
         image_annotations = self.annotations[sample_data_token]
         

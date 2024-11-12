@@ -58,8 +58,8 @@ def get_args_parser(add_help=True):
     parser.add_argument(
         "-b", "--batch-size", default=16, type=int, help="images per gpu, the total batch size is $NGPU x batch_size"
     )
-    parser.add_argument("--epochs", default=10, type=int, metavar="N", help="number of total epochs to run")
-    parser.add_argument("--saveeveryepoch", default=4, type=int, metavar="N", help="number of epochs to save")
+    parser.add_argument("--epochs", default=5, type=int, metavar="N", help="number of total epochs to run")
+    parser.add_argument("--saveeveryepoch", default=1, type=int, metavar="N", help="number of epochs to save")
     parser.add_argument(
         "-j", "--workers", default=4, type=int, metavar="N", help="number of data loading workers (default: 4)"
     )
